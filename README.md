@@ -7,9 +7,11 @@ Mobile-friendly, offline-first PWA for tracking employee safety-item issues and 
 - Employee search, usual-shift assignment, and per-transaction shift selection.
 - Cotton Gloves and Rubber Gloves: one issue per week.
 - Mask: daily issue rule.
-- Helmet, Safety Boots, Chin Guard, and Goggles: damage/replacement confirmation and reason required.
-- Ear Buds: issuing remains blocked until a rule is selected in Stock & Rules.
-- Stock tracking, pending requests, daily reports, CSV export, and JSON backup/restore.
+- Helmet, Safety Boots, Chin Guard, Goggles, and Safety Jacket are separate tracked items.
+- Every item has an editable issue rule (weekly limit, daily limit, damaged/replacement, supervisor approval, no limit, or not set/blocked).
+- Monthly per-employee issue history and request history.
+- Stock tracking, pending requests, daily reports, quick daily-close print/backup actions, CSV export, and JSON backup/restore.
+- Printed daily reports include the selected report date.
 
 ## Weekly periods
 V1 uses day 1–7 as Week 1, 8–14 as Week 2, 15–21 as Week 3, and 22–month-end as Week 4. Confirm this matches the site's actual weekly issue cycle before relying on it for policy enforcement.
