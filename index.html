@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#12325a"><meta name="description" content="Offline-first safety item issue and pending request tracker">
+<link rel="manifest" href="manifest.json"><link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>Safety Items Desk</title>
+<style>
+:root{--navy:#12325a;--blue:#2463a6;--sky:#eaf3ff;--bg:#f4f7fb;--ink:#172033;--muted:#64748b;--line:#dce4ef;--green:#16794b;--amber:#9a5a00;--red:#b42318;--white:#fff;--shadow:0 5px 18px rgba(20,40,75,.07)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}.topbar{background:linear-gradient(135deg,#102b4d,#1d5792);color:white;padding:18px 16px 14px;position:sticky;top:0;z-index:10;box-shadow:0 3px 12px #102b4d22}.topline{display:flex;align-items:center;gap:12px}.logo{width:42px;height:42px;border-radius:13px;background:#ffffff1b;display:grid;place-items:center;font-size:22px}.brand{flex:1}.brand h1{font-size:18px;line-height:1.2;margin:0}.brand p{margin:4px 0 0;color:#d3e4fa;font-size:12px}.top-stats{display:flex;gap:8px;margin-top:14px}.top-stat{background:#ffffff17;border:1px solid #ffffff24;border-radius:10px;padding:7px 10px;flex:1;min-width:0}.top-stat span{display:block;color:#d5e6fa;font-size:10px}.top-stat b{font-size:17px}.layout{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:215px minmax(0,1fr);gap:18px;padding:18px}.sidebar{align-self:start;position:sticky;top:154px;background:white;border:1px solid var(--line);border-radius:16px;padding:8px;box-shadow:var(--shadow)}.navbtn{border:0;background:transparent;width:100%;text-align:left;padding:11px 12px;border-radius:10px;color:#4a5a72;display:flex;gap:10px;align-items:center;margin:2px 0;font-weight:600}.navbtn.active,.navbtn:hover{background:var(--sky);color:var(--blue)}.navicon{width:20px;text-align:center}.main{min-width:0}.pagehead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:2px 0 14px}.pagehead h2{font-size:22px;margin:0}.subtle{color:var(--muted);font-size:12px}.view{display:none}.view.active{display:block}.grid{display:grid;gap:14px}.metrics{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:14px}.metric,.panel{background:white;border:1px solid var(--line);border-radius:15px;padding:15px;box-shadow:var(--shadow);min-width:0}.metric span{display:block;color:var(--muted);font-size:12px}.metric strong{display:block;font-size:27px;margin-top:4px;line-height:1.2}.metric.warn{border-color:#f0d7a8;background:#fffaf0}.panel h3{font-size:15px;margin:0 0 12px}.two-col{grid-template-columns:1fr 1fr}.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:flex;flex-direction:column;gap:5px;min-width:0}.field.full{grid-column:1/-1}label{font-size:12px;font-weight:700;color:#44536a}input,select,textarea{border:1px solid #cbd5e1;border-radius:9px;background:#fff;padding:10px 11px;min-width:0;width:100%;color:var(--ink)}input:focus,select:focus,textarea:focus{outline:3px solid #bfdbfe;border-color:#4d8bd2}textarea{resize:vertical;min-height:68px}.btn{border:0;border-radius:9px;padding:10px 13px;background:var(--blue);color:white;font-weight:700}.btn:hover{filter:brightness(.95)}.btn.secondary{background:#edf2f8;color:#30425d;border:1px solid #dbe3ee}.btn.danger{background:#fff0ee;color:var(--red);border:1px solid #ffd2cc}.btn.small{padding:6px 8px;font-size:11px}.btnrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.hidden{display:none!important}.employee-card{background:#f0f7ff;border:1px solid #c9e0fb;border-radius:12px;padding:13px;margin:12px 0}.employee-card h4{font-size:16px;margin:0}.employee-card .meta{color:#526783;font-size:12px;margin-top:3px}.history-head{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:12px;margin:12px 0 8px}.week-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.week-chip{border:1px solid var(--line);border-radius:9px;background:white;padding:8px 3px;text-align:center}.week-chip.current{border-color:var(--blue);background:#eaf3ff}.week-chip small{display:block;font-size:10px;color:var(--muted)}.week-chip b{font-size:19px}.rule-note{font-size:12px;color:#45546a;margin-top:9px}.checkline{display:flex;gap:8px;align-items:flex-start;padding:10px;background:#fff8e8;border:1px solid #f1dfb6;border-radius:9px}.checkline input{width:auto;margin-top:3px}.checkline label{font-weight:500;color:#704c12}.list-row{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid #edf1f6}.list-row:last-child{border-bottom:0}.list-row b{display:block;font-size:13px}.list-row small{display:block;color:var(--muted);font-size:11px;margin-top:3px}.tag{display:inline-block;font-size:10px;font-weight:800;padding:4px 7px;border-radius:20px;white-space:nowrap}.tag.green{background:#e4f7eb;color:#17663d}.tag.amber{background:#fff0cf;color:#875000}.tag.red{background:#ffe7e4;color:#a21d14}.tag.gray{background:#edf1f6;color:#5d6878}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:11px}table{border-collapse:collapse;width:100%;min-width:600px;background:white}th,td{text-align:left;padding:10px;border-bottom:1px solid #e9eef5;font-size:12px;vertical-align:middle}th{background:#f0f5fb;color:#52617a;font-size:10px;text-transform:uppercase;letter-spacing:.04em;position:sticky;top:0}td small{display:block;color:var(--muted);font-size:10px;margin-top:3px}.table-select,.stock-input{padding:7px;font-size:11px}.searchbar{max-width:340px}.empty{padding:18px;text-align:center;color:var(--muted);font-size:12px}.section-gap{margin-top:14px}.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:#16385f;color:white;border-radius:12px;padding:12px 16px;box-shadow:var(--shadow);z-index:99;opacity:0;pointer-events:none;transition:.2s;max-width:92vw;font-size:13px}.toast.show{opacity:1;transform:translate(-50%,0)}.toast.bad{background:#9f241c}.footnote{color:var(--muted);font-size:11px;margin-top:10px}.mobile-nav{display:none}.pill{display:inline-flex;gap:5px;align-items:center;background:#e8f2ff;color:#225c99;border-radius:99px;padding:5px 8px;font-size:11px;font-weight:700}.print-only{display:none}
+@media(max-width:820px){.layout{display:block;padding:12px 10px 86px}.sidebar{display:none}.topbar{padding:13px 12px 11px}.brand h1{font-size:16px}.top-stats{gap:5px;margin-top:11px}.top-stat{padding:6px 7px}.top-stat span{font-size:9px}.top-stat b{font-size:15px}.pagehead h2{font-size:20px}.metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.metric{padding:12px}.metric strong{font-size:24px}.two-col{grid-template-columns:1fr}.field-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.mobile-nav{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:20;background:#fff;border-top:1px solid var(--line);padding:5px 4px calc(5px + env(safe-area-inset-bottom));justify-content:space-around;box-shadow:0 -5px 20px #17345212}.mobile-nav .navbtn{display:flex;flex-direction:column;gap:2px;font-size:9px;padding:6px 3px;margin:0;text-align:center;flex:1}.mobile-nav .navicon{font-size:17px}.panel{padding:13px}.week-chip b{font-size:17px}.pagehead .subtle{display:none}}
+@media print{body{background:white}.topbar,.sidebar,.mobile-nav,.pagehead,.no-print,.toast{display:none!important}.layout{display:block;padding:0;max-width:none}.view{display:none!important}.view.active{display:block!important}.panel,.metric{box-shadow:none;border:1px solid #bbb;break-inside:avoid}.table-wrap{overflow:visible;border:0}table{min-width:0;width:100%}th,td{font-size:9px;padding:5px}.print-only{display:block}.print-title{font-size:18px;margin-bottom:4px}.print-meta{font-size:10px;margin-bottom:12px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+ <div class="topline"><div class="logo">🦺</div><div class="brand"><h1>Safety Items Desk</h1><p>Employee issue tracking · Weekly limits · Requests</p></div><button id="installHelp" class="btn secondary small">Install help</button></div>
+ <div class="top-stats">
+  <div class="top-stat"><span>Employees</span><b id="employeeCount">84</b></div>
+  <div class="top-stat"><span>Issued today</span><b id="todayIssueCount">0</b></div>
+  <div class="top-stat"><span>Pending</span><b id="pendingCount">0</b></div>
+  <div class="top-stat"><span>Low stock</span><b id="stockAlertCount">0</b></div>
+ </div>
+</header>
+<div class="layout">
+ <aside class="sidebar">
+  <button class="navbtn active" data-view="dashboard"><span class="navicon">▦</span>Dashboard</button>
+  <button class="navbtn" data-view="issue"><span class="navicon">＋</span>Issue / Request</button>
+  <button class="navbtn" data-view="employees"><span class="navicon">♙</span>Employees</button>
+  <button class="navbtn" data-view="requests"><span class="navicon">☷</span>Pending Requests</button>
+  <button class="navbtn" data-view="stock"><span class="navicon">▣</span>Stock & Rules</button>
+  <button class="navbtn" data-view="reports"><span class="navicon">▤</span>Reports & Backup</button>
+  <p class="footnote" style="padding:0 10px">V1 · Saves to this phone</p>
+ </aside>
+ <main class="main">
+  <div class="pagehead"><h2 id="pageTitle">Dashboard</h2><span class="subtle">Local phone storage</span></div>
+  <section id="view-dashboard" class="view active">
+   <div id="dashboardCards" class="grid metrics"></div>
+   <div class="grid two-col">
+    <div class="panel"><h3>Pending requests · action list</h3><div id="tomorrowList"></div><div class="btnrow"><button class="btn small" onclick="switchView('requests')">Open requests</button></div></div>
+    <div class="panel"><h3>Low stock items</h3><div id="lowStockList"></div><div class="btnrow"><button class="btn small secondary" onclick="switchView('stock')">Update stock</button></div></div>
+   </div>
+   <div class="panel section-gap"><h3>Items issued today</h3><div id="todayList"></div><div class="btnrow"><button class="btn" onclick="switchView('issue')">＋ Issue / request item</button></div></div>
+   <p class="footnote">Weekly periods in V1: days 1–7 = Week 1, 8–14 = Week 2, 15–21 = Week 3, and 22–month-end = Week 4. This is a four-period monthly rule, not ISO calendar weeks.</p>
+  </section>
+  <section id="view-issue" class="view">
+   <div class="panel">
+    <h3>Issue a safety item</h3>
+    <form id="issueForm">
+     <div class="field-grid">
+      <div class="field full"><label for="employeeCode">Employee ID *</label><input id="employeeCode" list="employeeHints" placeholder="Type ID, e.g. M287" autocomplete="off" required><datalist id="employeeHints"></datalist></div>
+      <div class="field"><label for="itemSelect">Safety item *</label><select id="itemSelect" required></select></div>
+      <div class="field"><label for="issueQty">Quantity *</label><input id="issueQty" type="number" min="1" step="1" value="1" required></div>
+      <div class="field"><label for="issueDate">Date *</label><input id="issueDate" type="date" required></div>
+      <div class="field"><label for="issueShift">Shift *</label><select id="issueShift" required></select></div>
+      <div class="field full hidden" id="damageField"><div class="checkline"><input id="damageCheck" type="checkbox"><label for="damageCheck">Damage / replacement verified or supervisor approval recorded</label></div></div>
+      <div class="field full"><label for="issueReason">Damage reason / approval note (required for restricted items)</label><input id="issueReason" placeholder="e.g. Old boots damaged — checked by supervisor"></div>
+      <div class="field full"><label for="requestNotes">Request notes (optional)</label><textarea id="requestNotes" placeholder="e.g. Out of stock; bring tomorrow"></textarea></div>
+     </div>
+     <div id="employeeCard" class="employee-card hidden"><div class="subtle">Employee found</div><h4 id="empName"></h4><div class="meta"><span id="empCodeLabel"></span> · <span id="empShift"></span></div><div id="eligibilityPanel"></div></div>
+     <div class="btnrow"><button class="btn" type="submit">✓ Issue item</button><button class="btn secondary" type="button" id="newRequestBtn">＋ Save as pending request</button><button class="btn secondary" type="reset">Clear form</button></div>
+    </form>
+    <p class="footnote">The app blocks weekly/daily limit violations. Restricted items require the damage/approval checkbox and a reason. Pending requests do not reduce stock.</p>
+   </div>
+  </section>
+  <section id="view-employees" class="view">
+   <div class="panel">
+    <div class="pagehead"><div><h3>Employee register</h3><div class="subtle">84 employees imported from your existing list. Assign each person's usual shift here if known.</div></div><input id="employeeSearch" class="searchbar" placeholder="Search ID or name"></div>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Name</th><th>Usual shift</th><th>Status</th><th>Action</th></tr></thead><tbody id="employeeTable"></tbody></table></div>
+   </div>
+   <div class="panel section-gap"><h3>Add a new employee</h3><form id="addEmployeeForm" class="field-grid"><div class="field"><label for="newEmpCode">Employee ID</label><input id="newEmpCode" placeholder="e.g. M700" required></div><div class="field"><label for="newEmpName">Employee name</label><input id="newEmpName" required></div><div class="field full"><label for="newEmpShift">Usual shift</label><select id="newEmpShift"><option value="">Not assigned</option><option>Morning 6:30 AM</option><option>Day 2:30 PM</option></select></div><div class="field full"><button class="btn">Add employee</button></div></form></div>
+  </section>
+  <section id="view-requests" class="view">
+   <div id="requestSummary" class="grid metrics" style="grid-template-columns:repeat(2,minmax(0,1fr))"></div>
+   <div class="panel"><div class="pagehead"><div><h3>Requests to bring / issue later</h3><div class="subtle">Fulfil only after stock arrives and policy checks pass.</div></div><select id="requestFilter" style="max-width:150px"><option>Pending</option><option>Fulfilled</option><option>Cancelled</option><option>All</option></select></div>
+   <div class="table-wrap"><table><thead><tr><th>Requested date</th><th>Employee</th><th>Item</th><th>Qty</th><th>Shift</th><th>Status</th><th>Action</th></tr></thead><tbody id="requestTable"></tbody></table></div></div>
+  </section>
+  <section id="view-stock" class="view">
+   <div class="panel"><h3>Stock on hand</h3><p class="subtle">Enter your actual opening stock. Issue transactions deduct quantities automatically.</p><div class="table-wrap"><table><thead><tr><th>Item</th><th>Rule</th><th>Stock</th><th>Unit</th><th>Save</th></tr></thead><tbody id="stockTable"></tbody></table></div><p id="stockNote" class="footnote"></p></div>
+   <div class="panel section-gap"><h3>Ear Buds rule</h3><div class="field"><label for="earRule">Choose rule for Ear Buds</label><select id="earRule"><option value="unknown">Not set yet (issuing blocked)</option><option value="weekly">Once per week</option><option value="daily">Daily</option><option value="damage">Damaged/replacement only</option><option value="manual">Supervisor approval</option></select></div><div class="btnrow"><button id="saveEarRule" class="btn">Save Ear Buds rule</button></div></div>
+   <div class="panel section-gap"><h3>Current issue rules</h3><ul><li>Cotton Gloves — one per week</li><li>Rubber Gloves — one per week</li><li>Mask — daily (V1 default max 99 per day)</li><li>Helmet, Safety Boots, Chin Guard and Goggles — damage/replacement only</li><li>Other item — supervisor approval and reason required</li></ul><p class="footnote">For safety and audit purposes, keep the damage reason factual. These are the rules you supplied; adjust them if your office has a different written policy.</p></div>
+  </section>
+  <section id="view-reports" class="view">
+   <div class="panel">
+    <div class="pagehead"><div><h3>Daily report</h3><div class="subtle">Print or review items issued for a chosen date.</div></div><input id="reportDate" type="date" style="max-width:170px"></div>
+    <div id="reportSummary" class="grid metrics" style="grid-template-columns:repeat(3,minmax(0,1fr))"></div>
+    <div class="print-only"><div class="print-title">Safety Items — Daily Issue Report</div><div class="print-meta">Project: Habarana Tunnel · Date: <span id="printDate"></span></div></div>
+    <h3 class="section-gap">Items issued</h3><div class="table-wrap"><table><thead><tr><th>ID</th><th>Name</th><th>Item</th><th>Qty</th><th>Shift</th><th>Reason / note</th></tr></thead><tbody id="reportIssues"></tbody></table></div>
+    <h3 class="section-gap">All pending requests</h3><div class="table-wrap"><table><thead><tr><th>ID</th><th>Name</th><th>Item</th><th>Qty</th><th>Requested date</th><th>Notes</th></tr></thead><tbody id="reportPending"></tbody></table></div>
+    <div class="btnrow no-print"><button id="printReport" class="btn">Print daily report</button><button id="exportCsv" class="btn secondary">Export issues CSV</button><button id="exportBackup" class="btn secondary">Download full backup</button><label class="btn secondary" for="importBackup" style="display:inline-flex;align-items:center">Import backup</label><input id="importBackup" type="file" accept=".json,application/json" class="hidden"></div>
+   </div>
+   <div class="panel section-gap no-print"><h3>Data safety</h3><p class="subtle">All employee data, issue history, requests and stock are stored in this browser on this phone. Clearing browser data or changing phone/browser may remove access. Download a JSON backup regularly and keep it somewhere safe.</p><div class="btnrow"><button id="clearData" class="btn danger">Reset all app data</button></div></div>
+  </section>
+ </main>
+</div>
+<nav class="mobile-nav">
+ <button class="navbtn active" data-view="dashboard"><span class="navicon">▦</span>Home</button>
+ <button class="navbtn" data-view="issue"><span class="navicon">＋</span>Issue</button>
+ <button class="navbtn" data-view="employees"><span class="navicon">♙</span>People</button>
+ <button class="navbtn" data-view="requests"><span class="navicon">☷</span>Requests</button>
+ <button class="navbtn" data-view="stock"><span class="navicon">▣</span>Stock</button>
+ <button class="navbtn" data-view="reports"><span class="navicon">▤</span>Reports</button>
+</nav>
+<div id="toast" class="toast"></div>
+<script>const SEED_EMPLOYEES = [{"code": "M470", "name": "W.M.M.M.Warnasooriya", "active": true, "shift": ""}, {"code": "M473", "name": "R.A.N.J.Ranasingha", "active": true, "shift": ""}, {"code": "M474", "name": "B.S.L.Prasanna", "active": true, "shift": ""}, {"code": "M590", "name": "R.A.S.R.Rathnayake", "active": true, "shift": ""}, {"code": "M47", "name": "H.G.S.N.Jayathilaka", "active": true, "shift": ""}, {"code": "M287", "name": "A.W.C.K.Kumara", "active": true, "shift": ""}, {"code": "M336", "name": "S.Wimalarathna", "active": true, "shift": ""}, {"code": "M375", "name": "A.R.S.Senavirathna", "active": true, "shift": ""}, {"code": "M388", "name": "D.M.C.L.Sampath", "active": true, "shift": ""}, {"code": "M394", "name": "K.R.Kumara", "active": true, "shift": ""}, {"code": "M458", "name": "U.H.K.I.Kumarasingha", "active": true, "shift": ""}, {"code": "M460", "name": "A.G.L.V.Kumara", "active": true, "shift": ""}, {"code": "M491", "name": "R.D.K.Wickramasingha", "active": true, "shift": ""}, {"code": "M495", "name": "M.M.D.S.Herath", "active": true, "shift": ""}, {"code": "M496", "name": "L.G.R.S.Liyanage", "active": true, "shift": ""}, {"code": "M503", "name": "A.A.M.Amarasingha", "active": true, "shift": ""}, {"code": "M509", "name": "W.M.S.A.Rupasingha", "active": true, "shift": ""}, {"code": "M513", "name": "W.M.K.P.Warnasooriya", "active": true, "shift": ""}, {"code": "M514", "name": "S.G.Rupasingha", "active": true, "shift": ""}, {"code": "M548", "name": "A.S.B.P.W.M.R.P.Bandara", "active": true, "shift": ""}, {"code": "M549", "name": "W.M.M.J.Podiputha", "active": true, "shift": ""}, {"code": "M553", "name": "J.M.S.M.Rajapaksha", "active": true, "shift": ""}, {"code": "M591", "name": "W.I.V.N.Wickramasekara", "active": true, "shift": ""}, {"code": "M592", "name": "E.M.K.Bandara", "active": true, "shift": ""}, {"code": "M593", "name": "Chndrarathna", "active": true, "shift": ""}, {"code": "M594", "name": "A.D.C.D.Pemarathna", "active": true, "shift": ""}, {"code": "M595", "name": "N.S.K.Nandasena", "active": true, "shift": ""}, {"code": "M632", "name": "A.R.S.I.Kumara", "active": true, "shift": ""}, {"code": "M633", "name": "L.G.G.P.Dasanayaka", "active": true, "shift": ""}, {"code": "M639", "name": "K.D.M.S.Samaraveera", "active": true, "shift": ""}, {"code": "M671", "name": "D.S.S.Dissanayake", "active": true, "shift": ""}, {"code": "M672", "name": "A.W.K.Herath", "active": true, "shift": ""}, {"code": "M688", "name": "G.A.N.S.Wickramasingha", "active": true, "shift": ""}, {"code": "M689", "name": "W.M.C.R.Kumara", "active": true, "shift": ""}, {"code": "M691", "name": "N.N.Wijerathna", "active": true, "shift": ""}, {"code": "M696", "name": "S.J.Weerakon", "active": true, "shift": ""}, {"code": "M697", "name": "R.J.M.S.Jayawickrama", "active": true, "shift": ""}, {"code": "M743", "name": "RMKD Rathnayaka", "active": true, "shift": ""}, {"code": "M740", "name": "TU Karunathilaka", "active": true, "shift": ""}, {"code": "M738", "name": "PMS Sandeepa", "active": true, "shift": ""}, {"code": "M739", "name": "KJGS Jayasiri", "active": true, "shift": ""}, {"code": "M742", "name": "WMKI Wijerathna", "active": true, "shift": ""}, {"code": "M741", "name": "SP Buddika", "active": true, "shift": ""}, {"code": "M212", "name": "Priyantha 小工长", "active": true, "shift": ""}, {"code": "M76", "name": "DMWDissanayaka", "active": true, "shift": ""}, {"code": "M184", "name": "S.S.Maddvgpda", "active": true, "shift": ""}, {"code": "M297", "name": "A.G.V.C.Kumara", "active": true, "shift": ""}, {"code": "M298", "name": "P.R.V.C.Rajapaksha", "active": true, "shift": ""}, {"code": "M301", "name": "P.W.Saranga", "active": true, "shift": ""}, {"code": "M305", "name": "A.M.I.Bandara", "active": true, "shift": ""}, {"code": "M311", "name": "dinesh manjula piyarathna", "active": true, "shift": ""}, {"code": "M381", "name": "R.K.T.D.Kumara", "active": true, "shift": ""}, {"code": "M396", "name": "P.G.M.R.Herath", "active": true, "shift": ""}, {"code": "M398", "name": "K.D.L.Sampath", "active": true, "shift": ""}, {"code": "M400", "name": "H.M.A.P.Gunapala", "active": true, "shift": ""}, {"code": "M401", "name": "A.Lahiru", "active": true, "shift": ""}, {"code": "M407", "name": "D.M.P.N.Dissanayaka", "active": true, "shift": ""}, {"code": "M409", "name": "K.K.K.S.G.Kalpage", "active": true, "shift": ""}, {"code": "M412", "name": "D.M.G.Munidasa", "active": true, "shift": ""}, {"code": "M414", "name": "S.W.G.S. Kumara", "active": true, "shift": ""}, {"code": "M427", "name": "G.I.G.Kumara", "active": true, "shift": ""}, {"code": "M461", "name": "N.D.C.G.Wijewardana", "active": true, "shift": ""}, {"code": "M462", "name": "W.D.V.Wijesiri", "active": true, "shift": ""}, {"code": "M481", "name": "W.A.P.Lakshan", "active": true, "shift": ""}, {"code": "M487", "name": "K.M.S.D.Darmasiri", "active": true, "shift": ""}, {"code": "M490", "name": "P.G.J.K.Herath", "active": true, "shift": ""}, {"code": "M494", "name": "H.M.S.Karunarathna", "active": true, "shift": ""}, {"code": "M511", "name": "K.G.G.Samarawickrama", "active": true, "shift": ""}, {"code": "M515", "name": "J.D.K.S.Jayathilaka", "active": true, "shift": ""}, {"code": "M516", "name": "U.N.Premachandra", "active": true, "shift": ""}, {"code": "M518", "name": "R.M.S.D.Rathnayaka", "active": true, "shift": ""}, {"code": "M542", "name": "D.M.E.Dissanayake", "active": true, "shift": ""}, {"code": "M545", "name": "K.M.I.Lakshitha", "active": true, "shift": ""}, {"code": "M555", "name": "P.G.I.S.Dasanayaka", "active": true, "shift": ""}, {"code": "M556", "name": "D.M.R.P.H.Dissanayake", "active": true, "shift": ""}, {"code": "M557", "name": "P.G.H.M.S.K.Herath", "active": true, "shift": ""}, {"code": "M559", "name": "E.M.M.K.Thilakarathna", "active": true, "shift": ""}, {"code": "M563", "name": "T.L.D.Bandara", "active": true, "shift": ""}, {"code": "M564", "name": "S.S.M.Budhawatte", "active": true, "shift": ""}, {"code": "M565", "name": "R.K.A.Kumra", "active": true, "shift": ""}, {"code": "M610", "name": "K.U.J.S.De silva", "active": true, "shift": ""}, {"code": "M692", "name": "B.V.P.Dananjaya", "active": true, "shift": ""}, {"code": "M693", "name": "M.P.S.C.Kumara", "active": true, "shift": ""}, {"code": "M694", "name": "H.G.M.Hasakelum", "active": true, "shift": ""}];</script>
+<script>
+const STORAGE_KEY = "safetyItemsAppV1";
+const DEFAULT_ITEMS = [
+  {id:"cotton_gloves",name:"Cotton Gloves",rule:"weekly",limit:1,stock:0,unit:"pair"},
+  {id:"rubber_gloves",name:"Rubber Gloves",rule:"weekly",limit:1,stock:0,unit:"pair"},
+  {id:"mask",name:"Mask",rule:"daily",limit:99,stock:0,unit:"piece"},
+  {id:"helmet",name:"Helmet",rule:"damage",limit:1,stock:0,unit:"piece"},
+  {id:"boots",name:"Safety Boots",rule:"damage",limit:1,stock:0,unit:"pair"},
+  {id:"chin_guard",name:"Chin Guard",rule:"damage",limit:1,stock:0,unit:"piece"},
+  {id:"goggles",name:"Goggles",rule:"damage",limit:1,stock:0,unit:"piece"},
+  {id:"ear_buds",name:"Ear Buds",rule:"unknown",limit:1,stock:0,unit:"pair"},
+  {id:"other",name:"Other Safety Item",rule:"manual",limit:1,stock:0,unit:"piece"}
+];
+const SHIFT_OPTIONS = ["Morning 6:30 AM","Day 2:30 PM"];
+const $ = id => document.getElementById(id);
+const todayISO = () => { const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; };
+const uid = () => `${Date.now().toString(36)}-${Math.random().toString(36).slice(2,8)}`;
+function freshState(){
+  return {version:1,employees:SEED_EMPLOYEES.map(e=>({...e,shift:e.shift||"",active:e.active!==false})),items:DEFAULT_ITEMS.map(x=>({...x})),issues:[],requests:[],settings:{earBudsRule:"unknown",weekMethod:"day-ranges"},lastShift:SHIFT_OPTIONS[0]};
+}
+let state = loadState();
+function loadState(){
+  try { const raw=localStorage.getItem(STORAGE_KEY); if(!raw) return freshState(); const s=JSON.parse(raw);
+    if(!Array.isArray(s.employees)||!Array.isArray(s.items)) return freshState();
+    s.issues ||= []; s.requests ||= []; s.settings ||= {earBudsRule:"unknown",weekMethod:"day-ranges"}; s.lastShift ||= SHIFT_OPTIONS[0];
+    for(const d of DEFAULT_ITEMS) if(!s.items.some(i=>i.id===d.id)) s.items.push({...d});
+    return s;
+  } catch(e){ return freshState(); }
+}
+function save(){ localStorage.setItem(STORAGE_KEY,JSON.stringify(state)); updateHeader(); }
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function notify(msg, bad=false){const el=$("toast");el.textContent=msg;el.className="toast show"+(bad?" bad":"");setTimeout(()=>el.className="toast",3000);}
+function getEmployee(code){return state.employees.find(e=>e.code.toUpperCase()===String(code).trim().toUpperCase()&&e.active!==false);}
+function getItem(id){return state.items.find(i=>i.id===id);}
+function weekOf(date){const day=Number(String(date).slice(8,10));return Math.min(4,Math.floor((day-1)/7)+1);}
+function weekLabel(date){return `Week ${weekOf(date)}`;}
+function fmtDate(d){if(!d)return "—";return new Date(d+"T00:00:00").toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric"});}
+function fmtRule(i){
+ const r=i.id==="ear_buds"?(state.settings.earBudsRule||"unknown"):i.rule;
+ return ({weekly:`${i.limit||1} per week`,daily:"Daily allowance",damage:"Damaged/replacement only",unknown:"Rule not set — review required",manual:"Supervisor approval"})[r]||r;
+}
+function updateHeader(){
+ $("employeeCount").textContent=state.employees.filter(e=>e.active!==false).length;
+ $("pendingCount").textContent=state.requests.filter(r=>r.status==="Pending").length;
+ $("stockAlertCount").textContent=state.items.filter(i=>Number(i.stock)<=2).length;
+ $("todayIssueCount").textContent=state.issues.filter(i=>i.date===todayISO()).length;
+}
+function switchView(view){
+ document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active",v.id===`view-${view}`));
+ document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===view));
+ $("pageTitle").textContent=({dashboard:"Dashboard",issue:"Issue / Request Item",employees:"Employees",requests:"Pending Requests",stock:"Stock & Rules",reports:"Reports & Backup"})[view]||"Safety Items";
+ if(view==="dashboard")renderDashboard(); if(view==="employees")renderEmployees(); if(view==="requests")renderRequests(); if(view==="stock")renderStock(); if(view==="reports")renderReports();
+}
+document.querySelectorAll("[data-view]").forEach(b=>b.addEventListener("click",()=>switchView(b.dataset.view)));
+function renderDashboard(){
+ const today= todayISO(), pending=state.requests.filter(r=>r.status==="Pending");
+ const stockLow=state.items.filter(i=>Number(i.stock)<=2);
+ $("dashboardCards").innerHTML=`
+ <div class="metric"><span>Active employees</span><strong>${state.employees.filter(e=>e.active!==false).length}</strong></div>
+ <div class="metric"><span>Issued today</span><strong>${state.issues.filter(i=>i.date===today).length}</strong></div>
+ <div class="metric warn"><span>Pending requests</span><strong>${pending.length}</strong></div>
+ <div class="metric ${stockLow.length?"warn":""}"><span>Low-stock items</span><strong>${stockLow.length}</strong></div>`;
+ const tomorrow=new Date(today+"T00:00:00");tomorrow.setDate(tomorrow.getDate()+1);const tiso=`${tomorrow.getFullYear()}-${String(tomorrow.getMonth()+1).padStart(2,"0")}-${String(tomorrow.getDate()).padStart(2,"0")}`;
+ $("tomorrowList").innerHTML= pending.length ? pending.map(r=>`<div class="list-row"><div><b>${esc(r.itemName)}</b><small>${esc(r.employeeCode)} · ${esc(r.employeeName)} · Qty ${r.qty}</small></div><span class="tag amber">Pending</span></div>`).join("") : `<div class="empty">No pending requests. You're all caught up.</div>`;
+ $("todayList").innerHTML=state.issues.filter(i=>i.date===today).slice().reverse().slice(0,8).map(i=>`<div class="list-row"><div><b>${esc(i.itemName)} × ${i.qty}</b><small>${esc(i.employeeCode)} · ${esc(i.employeeName)} · ${esc(i.shift)}</small></div><small>${esc(i.date)}</small></div>`).join("")||`<div class="empty">No items issued today.</div>`;
+ $("lowStockList").innerHTML=stockLow.map(i=>`<div class="list-row"><div><b>${esc(i.name)}</b><small>${esc(fmtRule(i))}</small></div><span class="tag ${Number(i.stock)<=0?"red":"amber"}">${i.stock} left</span></div>`).join("")||`<div class="empty">No low-stock items.</div>`;
+}
+function fillItemSelect(){
+ $("itemSelect").innerHTML=state.items.map(i=>`<option value="${esc(i.id)}">${esc(i.name)}</option>`).join("");
+}
+function fillEmployeeHints(){
+ $("employeeHints").innerHTML=state.employees.filter(e=>e.active!==false).map(e=>`<option value="${esc(e.code)}">${esc(e.name)}</option>`).join("");
+}
+function weeklyIssued(empCode,itemId,date){
+ const wk=weekOf(date), month=date.slice(0,7);
+ return state.issues.filter(x=>x.employeeCode===empCode&&x.itemId===itemId&&x.date.slice(0,7)===month&&weekOf(x.date)===wk).reduce((n,x)=>n+Number(x.qty),0);
+}
+function dailyIssued(empCode,itemId,date){
+ return state.issues.filter(x=>x.employeeCode===empCode&&x.itemId===itemId&&x.date===date).reduce((n,x)=>n+Number(x.qty),0);
+}
+function employeeItemHistory(empCode,itemId,date){
+ const month=date.slice(0,7);
+ return [1,2,3,4].map(w=>({week:w,qty:state.issues.filter(x=>x.employeeCode===empCode&&x.itemId===itemId&&x.date.slice(0,7)===month&&weekOf(x.date)===w).reduce((n,x)=>n+Number(x.qty),0)}));
+}
+function checkEligibility(emp,item,qty,date,damage){
+ const rule=item.id==="ear_buds"?(state.settings.earBudsRule||"unknown"):item.rule;
+ if(rule==="damage"&&!damage) return {ok:false,msg:"This item can only be issued as a damaged/replacement item. Mark damage/replacement and add a reason."};
+ if(rule==="unknown") return {ok:false,msg:"The issue rule for Ear Buds has not been set. Set it under Stock & Rules before issuing."};
+ if(rule==="weekly"){
+   const used=weeklyIssued(emp.code,item.id,date), limit=Number(item.limit||1);
+   if(used+qty>limit)return {ok:false,msg:`Weekly limit reached. ${emp.code} has already received ${used} ${item.name} in ${weekLabel(date)}. Allowed: ${limit} per week.`};
+ }
+ if(rule==="daily"){
+   const used=dailyIssued(emp.code,item.id,date), limit=Number(item.limit||99);
+   if(used+qty>limit)return {ok:false,msg:`Daily limit reached. Already issued today: ${used}.`};
+ }
+ if(rule==="manual"&&!damage)return {ok:false,msg:"This item needs supervisor approval. Tick the approval box and add a reason."};
+ return {ok:true,msg:"Eligible to issue."};
+}
+function updateEmployeeCard(){
+ const code=$("employeeCode").value.trim().toUpperCase(), date=$("issueDate").value||todayISO();
+ const emp=getEmployee(code);
+ const card=$("employeeCard");
+ if(!emp){card.classList.add("hidden");$("eligibilityPanel").innerHTML="";return;}
+ card.classList.remove("hidden");
+ $("empName").textContent=emp.name;
+ $("empShift").textContent=emp.shift||"Shift not assigned";
+ $("empCodeLabel").textContent=emp.code;
+ const item=getItem($("itemSelect").value); if(!item)return;
+ const hist=employeeItemHistory(emp.code,item.id,date);
+ $("eligibilityPanel").innerHTML=`<div class="history-head"><b>${esc(item.name)} history · ${date.slice(0,7)}</b><span>${esc(weekLabel(date))}</span></div>
+ <div class="week-grid">${hist.map(h=>`<div class="week-chip ${h.week===weekOf(date)?"current":""}"><small>Week ${h.week}</small><b>${h.qty}</b><small>issued</small></div>`).join("")}</div>
+ <div class="rule-note"><b>Rule:</b> ${esc(fmtRule(item))} · <b>Stock:</b> ${Number(item.stock)} ${esc(item.unit||"units")}</div>`;
+}
+$("employeeCode").addEventListener("input",()=>{ $("employeeCode").value=$("employeeCode").value.toUpperCase();updateEmployeeCard();});
+["itemSelect","issueDate","issueQty"].forEach(id=>$(id).addEventListener("change",updateEmployeeCard));
+$("issueDate").value=todayISO(); fillItemSelect();fillEmployeeHints();
+$("issueForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ const code=$("employeeCode").value.trim().toUpperCase(),emp=getEmployee(code),item=getItem($("itemSelect").value),date=$("issueDate").value,qty=Number($("issueQty").value),shift=$("issueShift").value,damage=$("damageCheck").checked,reason=$("issueReason").value.trim();
+ if(!emp)return notify("Employee ID not found. Check the ID or add the employee first.",true);
+ if(!item||!date||!shift||!Number.isInteger(qty)||qty<1)return notify("Please complete the required fields.",true);
+ if((item.rule==="damage"||item.id==="other"||(item.id==="ear_buds"&&state.settings.earBudsRule==="damage"))&&!damage)return notify("This item requires damage/replacement or approval confirmation.",true);
+ if((item.rule==="damage"||item.id==="other"||(item.id==="ear_buds"&&state.settings.earBudsRule==="damage"))&&!reason)return notify("Please enter the damage reason or approval note.",true);
+ const eligibility=checkEligibility(emp,item,qty,date,damage);
+ if(!eligibility.ok)return notify(eligibility.msg,true);
+ if(Number(item.stock)<qty){
+   if(!confirm(`Stock is insufficient (${item.stock} available). Save this as a pending request instead?`))return;
+   state.requests.push({id:uid(),employeeCode:emp.code,employeeName:emp.name,itemId:item.id,itemName:item.name,qty,date,shift,reason,damageVerified:damage,status:"Pending",createdAt:new Date().toISOString(),notes:$("requestNotes").value.trim()});
+   save();notify("Saved to Pending Requests — no stock deducted.");
+   $("issueForm").reset();$("issueDate").value=todayISO();$("issueShift").value=emp.shift||state.lastShift; $("issueQty").value=1; $("employeeCode").value=emp.code;updateEmployeeCard();return;
+ }
+ const rec={id:uid(),employeeCode:emp.code,employeeName:emp.name,itemId:item.id,itemName:item.name,qty,date,shift,reason,createdAt:new Date().toISOString()};
+ state.issues.push(rec);item.stock=Number(item.stock)-qty;state.lastShift=shift;emp.shift=shift;save();notify("Item issued and saved successfully.");
+ $("issueQty").value=1;$("damageCheck").checked=false;$("issueReason").value="";$("requestNotes").value="";updateEmployeeCard();
+});
+$("newRequestBtn").addEventListener("click",()=>{
+ const code=$("employeeCode").value.trim().toUpperCase(),emp=getEmployee(code),item=getItem($("itemSelect").value);
+ if(!emp||!item)return notify("Enter a valid employee ID and select an item first.",true);
+ const qty=Number($("issueQty").value)||1,date=$("issueDate").value||todayISO(),shift=$("issueShift").value||emp.shift||state.lastShift;
+ const reason=$("issueReason").value.trim();
+ state.requests.push({id:uid(),employeeCode:emp.code,employeeName:emp.name,itemId:item.id,itemName:item.name,qty,date,shift,reason,damageVerified:$("damageCheck").checked,status:"Pending",createdAt:new Date().toISOString(),notes:$("requestNotes").value.trim()});
+ save();notify("Request added to Pending Requests.");switchView("requests");
+});
+$("issueShift").innerHTML=SHIFT_OPTIONS.map(s=>`<option>${s}</option>`).join("");$("issueShift").value=state.lastShift;
+$("employeeCode").addEventListener("change",()=>{const e=getEmployee($("employeeCode").value);if(e&&e.shift)$("issueShift").value=e.shift;});
+$("issueDate").addEventListener("change",updateEmployeeCard);
+$("itemSelect").addEventListener("change",()=>{
+ const item=getItem($("itemSelect").value);const damageNeeded=item&&(item.rule==="damage"||item.id==="other"||(item.id==="ear_buds"&&state.settings.earBudsRule==="damage"));
+ $("damageField").classList.toggle("hidden",!damageNeeded);updateEmployeeCard();
+});
+function renderEmployees(){
+ const q=$("employeeSearch").value.trim().toLowerCase();
+ const list=state.employees.filter(e=>(e.code+" "+e.name).toLowerCase().includes(q));
+ $("employeeTable").innerHTML=list.map(e=>`<tr><td><b>${esc(e.code)}</b></td><td>${esc(e.name)}</td><td><select class="table-select" data-shift="${esc(e.code)}"><option value="">Not assigned</option>${SHIFT_OPTIONS.map(s=>`<option ${e.shift===s?"selected":""}>${s}</option>`).join("")}</select></td><td><span class="tag ${e.active!==false?"green":"gray"}">${e.active!==false?"Active":"Inactive"}</span></td><td><button class="btn small secondary" data-toggle="${esc(e.code)}">${e.active!==false?"Deactivate":"Reactivate"}</button></td></tr>`).join("");
+ $("employeeTable").querySelectorAll("[data-shift]").forEach(el=>el.addEventListener("change",()=>{const e=state.employees.find(x=>x.code===el.dataset.shift);if(e){e.shift=el.value;save();notify("Shift assignment saved.");}}));
+ $("employeeTable").querySelectorAll("[data-toggle]").forEach(el=>el.addEventListener("click",()=>{const e=state.employees.find(x=>x.code===el.dataset.toggle);if(e){e.active=e.active===false;save();renderEmployees();}}));
+}
+$("employeeSearch").addEventListener("input",renderEmployees);
+$("addEmployeeForm").addEventListener("submit",e=>{
+ e.preventDefault();const code=$("newEmpCode").value.trim().toUpperCase(),name=$("newEmpName").value.trim(),shift=$("newEmpShift").value;
+ if(!code||!name)return;
+ if(state.employees.some(x=>x.code.toUpperCase()===code))return notify("That Employee ID already exists.",true);
+ state.employees.push({code,name,shift,active:true});save();e.target.reset();renderEmployees();fillEmployeeHints();notify("Employee added.");
+});
+function renderRequests(){
+ const filter=$("requestFilter").value;
+ const list=state.requests.filter(r=>filter==="All"||r.status===filter).slice().reverse();
+ $("requestTable").innerHTML=list.map(r=>`<tr><td>${esc(fmtDate(r.date))}</td><td><b>${esc(r.employeeCode)}</b><small>${esc(r.employeeName)}</small></td><td>${esc(r.itemName)}</td><td>${r.qty}</td><td>${esc(r.shift||"—")}</td><td><span class="tag ${r.status==="Pending"?"amber":r.status==="Fulfilled"?"green":"gray"}">${esc(r.status)}</span></td><td>${r.status==="Pending"?`<button class="btn small" data-fulfill="${r.id}">Fulfil</button> <button class="btn small secondary" data-cancel="${r.id}">Cancel</button>`:esc(r.notes||"—")}</td></tr>`).join("")||`<tr><td colspan="7" class="empty">No requests in this view.</td></tr>`;
+ $("requestTable").querySelectorAll("[data-fulfill]").forEach(b=>b.addEventListener("click",()=>fulfilRequest(b.dataset.fulfill)));
+ $("requestTable").querySelectorAll("[data-cancel]").forEach(b=>b.addEventListener("click",()=>{const r=state.requests.find(x=>x.id===b.dataset.cancel);if(r){r.status="Cancelled";save();renderRequests();}}));
+ const pending=state.requests.filter(r=>r.status==="Pending");
+ $("requestSummary").innerHTML=`<div class="metric warn"><span>Pending</span><strong>${pending.length}</strong></div><div class="metric"><span>Requested quantity</span><strong>${pending.reduce((n,r)=>n+Number(r.qty),0)}</strong></div>`;
+}
+function fulfilRequest(id){
+ const r=state.requests.find(x=>x.id===id),item=r&&getItem(r.itemId);
+ if(!r||!item)return;
+ const emp=getEmployee(r.employeeCode)||state.employees.find(e=>e.code===r.employeeCode);
+ const rule=item.id==="ear_buds"?(state.settings.earBudsRule||"unknown"):item.rule;
+ if(rule==="unknown")return notify("Cannot fulfil: set the Ear Buds rule first in Stock & Rules.",true);
+ if((rule==="damage"||rule==="manual")&&(!r.damageVerified||!String(r.reason||"").trim()))return notify("Cannot fulfil: damage/approval confirmation and a reason are required. Recreate the request with those details.",true);
+ if(rule==="weekly"&&emp&&weeklyIssued(emp.code,item.id,todayISO())+Number(r.qty)>Number(item.limit||1))return notify("Cannot fulfil: employee has reached the weekly limit for the current week.",true);
+ if(rule==="daily"&&emp&&dailyIssued(emp.code,item.id,todayISO())+Number(r.qty)>Number(item.limit||99))return notify("Cannot fulfil: employee has reached the daily limit.",true);
+ if(Number(item.stock)<Number(r.qty))return notify(`Not enough stock. ${item.name}: ${item.stock} available.`,true);
+ item.stock=Number(item.stock)-Number(r.qty);
+ state.issues.push({id:uid(),employeeCode:r.employeeCode,employeeName:r.employeeName,itemId:r.itemId,itemName:r.itemName,qty:Number(r.qty),date:todayISO(),shift:r.shift,reason:r.reason||"Fulfilled pending request",createdAt:new Date().toISOString(),requestId:r.id});
+ r.status="Fulfilled";r.fulfilledDate=todayISO();save();renderRequests();notify("Request fulfilled and issue recorded.");
+}
+$("requestFilter").addEventListener("change",renderRequests);
+function renderStock(){
+ $("stockTable").innerHTML=state.items.map(i=>`<tr><td><b>${esc(i.name)}</b></td><td>${esc(fmtRule(i))}</td><td><input type="number" min="0" step="1" class="stock-input" data-stock="${i.id}" value="${Number(i.stock)}"></td><td>${esc(i.unit||"units")}</td><td><button class="btn small" data-save-stock="${i.id}">Save stock</button></td></tr>`).join("");
+ $("stockTable").querySelectorAll("[data-save-stock]").forEach(b=>b.addEventListener("click",()=>{const i=getItem(b.dataset.saveStock),v=Number($("stockTable").querySelector(`[data-stock="${b.dataset.saveStock}"]`).value);if(!Number.isInteger(v)||v<0)return notify("Stock must be zero or a positive whole number.",true);i.stock=v;save();renderStock();notify("Stock updated.");}));
+ $("earRule").value=state.settings.earBudsRule||"unknown";
+ $("stockNote").textContent="Set opening stock or update the remaining stock after receiving supplies. Stock is reduced automatically when items are issued.";
+}
+$("saveEarRule").addEventListener("click",()=>{state.settings.earBudsRule=$("earRule").value;save();notify("Ear Buds rule saved.");});
+function renderReports(){
+ const date=$("reportDate").value||todayISO(),month=date.slice(0,7),issues=state.issues.filter(i=>i.date===date),reqs=state.requests.filter(r=>r.status==="Pending");
+ $("reportDate").value=date;
+ $("reportSummary").innerHTML=`<div class="metric"><span>Issued on ${esc(fmtDate(date))}</span><strong>${issues.length}</strong></div><div class="metric"><span>Units issued today</span><strong>${issues.reduce((n,i)=>n+Number(i.qty),0)}</strong></div><div class="metric warn"><span>Pending requests</span><strong>${reqs.length}</strong></div>`;
+ $("reportIssues").innerHTML=issues.slice().reverse().map(i=>`<tr><td>${esc(i.employeeCode)}</td><td>${esc(i.employeeName)}</td><td>${esc(i.itemName)}</td><td>${i.qty}</td><td>${esc(i.shift)}</td><td>${esc(i.reason||"—")}</td></tr>`).join("")||`<tr><td colspan="6" class="empty">No items issued on this date.</td></tr>`;
+ $("reportPending").innerHTML=reqs.map(r=>`<tr><td>${esc(r.employeeCode)}</td><td>${esc(r.employeeName)}</td><td>${esc(r.itemName)}</td><td>${r.qty}</td><td>${esc(fmtDate(r.date))}</td><td>${esc(r.notes||r.reason||"—")}</td></tr>`).join("")||`<tr><td colspan="6" class="empty">No pending requests.</td></tr>`;
+}
+$("reportDate").value=todayISO();$("reportDate").addEventListener("change",renderReports);
+$("printReport").addEventListener("click",()=>window.print());
+$("exportBackup").addEventListener("click",()=>{
+ const blob=new Blob([JSON.stringify({...state,exportedAt:new Date().toISOString()},null,2)],{type:"application/json"});
+ downloadBlob(blob,`safety-items-backup-${todayISO()}.json`);
+});
+$("exportCsv").addEventListener("click",()=>{
+ const rows=[["Date","Employee ID","Employee Name","Shift","Item","Quantity","Reason","Week"]];
+ state.issues.forEach(i=>rows.push([i.date,i.employeeCode,i.employeeName,i.shift,i.itemName,i.qty,i.reason||"",weekOf(i.date)]));
+ downloadBlob(new Blob(["\ufeff"+rows.map(r=>r.map(csvCell).join(",")).join("\r\n")],{type:"text/csv;charset=utf-8"}),`safety-items-issues-${todayISO()}.csv`);
+});
+function csvCell(v){return `"${String(v??"").replace(/"/g,'""')}"`;}
+function downloadBlob(blob,name){const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
+$("importBackup").addEventListener("change",async e=>{
+ const f=e.target.files[0];if(!f)return;
+ try{const parsed=JSON.parse(await f.text());if(!Array.isArray(parsed.employees)||!Array.isArray(parsed.items)||!Array.isArray(parsed.issues)||!Array.isArray(parsed.requests))throw new Error("Invalid backup");
+ if(!confirm("Import this backup and replace the current data on this phone? Export a backup first if needed."))return;
+ state=parsed;save();fillItemSelect();fillEmployeeHints();renderDashboard();notify("Backup imported.");}catch(err){notify("Could not import this file. Please choose a valid Safety Items backup.",true);}finally{e.target.value="";}
+});
+$("clearData").addEventListener("click",()=>{if(!confirm("This permanently clears all local issues, requests, and stock changes. Export a backup first. Continue?"))return;if(!confirm("Final confirmation: erase all saved app data from this phone?"))return;state=freshState();save();fillItemSelect();fillEmployeeHints();renderDashboard();notify("Local data reset.");});
+$("installHelp").addEventListener("click",()=>alert("To install: open the hosted app in Chrome, tap ⋮, then choose 'Add to Home screen' or 'Install app'. For offline app-shell support, host index.html, manifest.json and sw.js together on HTTPS (for example GitHub Pages)."));
+function renderAll(){updateHeader();renderDashboard();renderEmployees();renderRequests();renderStock();renderReports();updateEmployeeCard();}
+renderAll();
+</script>
+<script>
+if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+}
+</script>
+</body></html>
