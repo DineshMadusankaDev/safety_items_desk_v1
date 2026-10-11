@@ -162,7 +162,7 @@ function switchView(view){
  document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active",v.id===`view-${view}`));
  document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===view));
  $("pageTitle").textContent=({dashboard:"Dashboard",issue:"Issue / Request Item",employees:"Employees",requests:"Pending Requests",stock:"Stock & Rules",reports:"Reports & Backup"})[view]||"Safety Items";
- if(view==="dashboard")renderDashboard(); if(view==="employees")renderEmployees(); if(view==="requests")renderRequests(); if(view==="stock")renderStock(); if(view==="reports")renderReports();
+ if(view==="dashboard")renderDashboard(); if(view==="employees"){renderEmployees();renderEmployeeHistory();} if(view==="requests")renderRequests(); if(view==="stock")renderStock(); if(view==="reports")renderReports(); if(view==="issue"){const item=getItem($("itemSelect").value);$("damageField").classList.toggle("hidden",!(item&&(item.rule==="damage"||item.rule==="manual")));updateEmployeeCard();}
 }
 document.querySelectorAll("[data-view]").forEach(b=>b.addEventListener("click",()=>switchView(b.dataset.view)));
 function renderDashboard(){
