@@ -86,8 +86,9 @@
     <div class="pagehead"><div><h3>Daily report</h3><div class="subtle">Print or review items issued for a chosen date.</div></div><input id="reportDate" type="date" style="max-width:170px"></div>
     <div id="reportSummary" class="grid metrics" style="grid-template-columns:repeat(3,minmax(0,1fr))"></div>
     <div class="print-only"><div class="print-title">Safety Items — Daily Issue Report</div><div class="print-meta">Project: Habarana Tunnel · Date: <span id="printDate"></span></div></div>
-    <h3 class="section-gap">Items issued</h3><div class="table-wrap"><table><thead><tr><th>ID</th><th>Name</th><th>Item</th><th>Qty</th><th>Shift</th><th>Reason / note</th></tr></thead><tbody id="reportIssues"></tbody></table></div>
-    <h3 class="section-gap">All pending requests</h3><div class="table-wrap"><table><thead><tr><th>ID</th><th>Name</th><th>Item</th><th>Qty</th><th>Requested date</th><th>Notes</th></tr></thead><tbody id="reportPending"></tbody></table></div>
+    <h3 class="section-gap">Items issued · edit or remove incorrect entries</h3><div class="table-wrap"><table><thead><tr><th>ID</th><th>Name</th><th>Item</th><th>Qty</th><th>Shift</th><th>Reason / note</th><th class="no-print">Actions</th></tr></thead><tbody id="reportIssues"></tbody></table></div>
+    <h3 class="section-gap">All pending requests · edit or remove</h3><div class="table-wrap"><table><thead><tr><th>ID</th><th>Name</th><th>Item</th><th>Qty</th><th>Requested date</th><th>Notes</th><th class="no-print">Actions</th></tr></thead><tbody id="reportPending"></tbody></table></div>
+    <div id="recordEditorPanel" class="panel section-gap hidden no-print"><div class="pagehead"><div><h3 id="recordEditorTitle">Edit record</h3><div class="subtle">Correct a mistaken entry. Stock is adjusted automatically when an issued item or quantity changes.</div></div><button type="button" id="cancelRecordEdit" class="btn secondary small">Cancel</button></div><form id="recordEditorForm"><div class="field-grid"><div class="field"><label for="editEmployee">Employee</label><select id="editEmployee" required></select></div><div class="field"><label for="editItem">Safety item</label><select id="editItem" required></select></div><div class="field"><label for="editDate">Date</label><input id="editDate" type="date" required></div><div class="field"><label for="editQty">Quantity</label><input id="editQty" type="number" min="1" step="1" required></div><div class="field"><label for="editShift">Shift</label><select id="editShift" required></select></div><div class="field"><label for="editReason">Reason / damage note</label><input id="editReason" type="text" maxlength="250"></div><div class="field"><label for="editNotes">Additional notes</label><input id="editNotes" type="text" maxlength="250"></div></div><div class="btnrow"><button type="submit" class="btn">Save changes</button><button type="button" id="cancelRecordEdit2" class="btn secondary">Cancel</button></div></form></div>
     <div class="btnrow no-print"><button id="printReport" class="btn">Print daily report</button><button id="exportCsv" class="btn secondary">Export issues CSV</button><button id="exportBackup" class="btn secondary">Download full backup</button><label class="btn secondary" for="importBackup" style="display:inline-flex;align-items:center">Import backup</label><input id="importBackup" type="file" accept=".json,application/json" class="hidden"></div>
    </div>
    <div class="panel section-gap no-print"><h3>Data safety</h3><p class="subtle">All employee data, issue history, requests and stock are stored in this browser on this phone. Clearing browser data or changing phone/browser may remove access. Download a JSON backup regularly and keep it somewhere safe.</p><div class="btnrow"><button id="clearData" class="btn danger">Reset all app data</button></div></div>
@@ -314,8 +315,62 @@ function renderReports(){
  $("reportDate").value=date;
  $("printDate").textContent=fmtDate(date);
  $("reportSummary").innerHTML=`<div class="metric"><span>Issued on ${esc(fmtDate(date))}</span><strong>${issues.length}</strong></div><div class="metric"><span>Units issued today</span><strong>${issues.reduce((n,i)=>n+Number(i.qty),0)}</strong></div><div class="metric warn"><span>Pending requests</span><strong>${reqs.length}</strong></div>`;
- $("reportIssues").innerHTML=issues.slice().reverse().map(i=>`<tr><td>${esc(i.employeeCode)}</td><td>${esc(i.employeeName)}</td><td>${esc(i.itemName)}</td><td>${i.qty}</td><td>${esc(i.shift)}</td><td>${esc(i.reason||"—")}</td></tr>`).join("")||`<tr><td colspan="6" class="empty">No items issued on this date.</td></tr>`;
- $("reportPending").innerHTML=reqs.map(r=>`<tr><td>${esc(r.employeeCode)}</td><td>${esc(r.employeeName)}</td><td>${esc(r.itemName)}</td><td>${r.qty}</td><td>${esc(fmtDate(r.date))}</td><td>${esc(r.notes||r.reason||"—")}</td></tr>`).join("")||`<tr><td colspan="6" class="empty">No pending requests.</td></tr>`;
+ $("reportIssues").innerHTML=issues.slice().reverse().map(i=>`<tr><td>${esc(i.employeeCode)}</td><td>${esc(i.employeeName)}</td><td>${esc(i.itemName)}</td><td>${i.qty}</td><td>${esc(i.shift||"—")}</td><td>${esc(i.reason||"—")}</td><td class="no-print"><button type="button" class="btn small" data-edit-issue="${i.id}">Edit</button> <button type="button" class="btn small danger" data-delete-issue="${i.id}">Delete</button></td></tr>`).join("")||`<tr><td colspan="7" class="empty">No items issued on this date.</td></tr>`;
+ $("reportPending").innerHTML=reqs.map(r=>`<tr><td>${esc(r.employeeCode)}</td><td>${esc(r.employeeName)}</td><td>${esc(r.itemName)}</td><td>${r.qty}</td><td>${esc(fmtDate(r.date))}</td><td>${esc(r.notes||r.reason||"—")}</td><td class="no-print"><button type="button" class="btn small" data-edit-request="${r.id}">Edit</button> <button type="button" class="btn small danger" data-delete-request="${r.id}">Delete</button></td></tr>`).join("")||`<tr><td colspan="7" class="empty">No pending requests.</td></tr>`;
+ $("reportIssues").querySelectorAll("[data-edit-issue]").forEach(b=>b.addEventListener("click",()=>openRecordEditor("issue",b.dataset.editIssue)));
+ $("reportIssues").querySelectorAll("[data-delete-issue]").forEach(b=>b.addEventListener("click",()=>deleteIssueRecord(b.dataset.deleteIssue)));
+ $("reportPending").querySelectorAll("[data-edit-request]").forEach(b=>b.addEventListener("click",()=>openRecordEditor("request",b.dataset.editRequest)));
+ $("reportPending").querySelectorAll("[data-delete-request]").forEach(b=>b.addEventListener("click",()=>deletePendingRequest(b.dataset.deleteRequest)));
+}
+let editingRecordType="",editingRecordId="";
+function openRecordEditor(type,id){
+ const rec=(type==="issue"?state.issues:state.requests).find(x=>x.id===id);
+ if(!rec)return notify("Record not found. Refresh and try again.",true);
+ if(type==="request"&&rec.status!=="Pending")return notify("Only pending requests can be edited here. Fulfilled requests are linked to their issue record.",true);
+ editingRecordType=type;editingRecordId=id;
+ $("recordEditorTitle").textContent=type==="issue"?"Edit issued item":"Edit pending request";
+ $("editEmployee").innerHTML=state.employees.slice().sort((a,b)=>a.code.localeCompare(b.code)).map(e=>`<option value="${esc(e.code)}">${esc(e.code)} — ${esc(e.name)}${e.active===false?" (inactive)":""}</option>`).join("");
+ $("editItem").innerHTML=state.items.map(i=>`<option value="${esc(i.id)}">${esc(i.name)}</option>`).join("");
+ $("editShift").innerHTML=SHIFT_OPTIONS.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join("");
+ $("editEmployee").value=rec.employeeCode;$("editItem").value=rec.itemId;$("editDate").value=rec.date||todayISO();$("editQty").value=Number(rec.qty||1);$("editShift").value=rec.shift||SHIFT_OPTIONS[0];$("editReason").value=rec.reason||"";$("editNotes").value=rec.notes||"";
+ $("recordEditorPanel").classList.remove("hidden");$("recordEditorPanel").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function closeRecordEditor(){$("recordEditorPanel").classList.add("hidden");$("recordEditorForm").reset();editingRecordType="";editingRecordId="";}
+$("cancelRecordEdit").addEventListener("click",closeRecordEditor);$("cancelRecordEdit2").addEventListener("click",closeRecordEditor);
+$("recordEditorForm").addEventListener("submit",e=>{
+ e.preventDefault();const type=editingRecordType,id=editingRecordId;
+ const rec=(type==="issue"?state.issues:state.requests).find(x=>x.id===id);
+ const emp=state.employees.find(x=>x.code===$("editEmployee").value),item=getItem($("editItem").value),date=$("editDate").value,qty=Number($("editQty").value),shift=$("editShift").value,reason=$("editReason").value.trim(),notes=$("editNotes").value.trim();
+ if(!rec||!emp||!item||!date||!shift||!Number.isInteger(qty)||qty<1)return notify("Check employee, item, date, shift and quantity.",true);
+ if(type==="issue"){
+  const oldItem=getItem(rec.itemId),oldQty=Number(rec.qty||0);
+  if(!oldItem)return notify("The original item could not be found. No changes saved.",true);
+  if(oldItem.id===item.id){
+   const extra=qty-oldQty;
+   if(extra>Number(item.stock))return notify(`Not enough ${item.name} in stock to increase this issue. Available: ${item.stock}.`,true);
+   item.stock=Number(item.stock)-extra;
+  }else{
+   if(Number(item.stock)<qty)return notify(`Not enough ${item.name} in stock. Available: ${item.stock}.`,true);
+   oldItem.stock=Number(oldItem.stock)+oldQty;item.stock=Number(item.stock)-qty;
+  }
+  Object.assign(rec,{employeeCode:emp.code,employeeName:emp.name,itemId:item.id,itemName:item.name,qty,date,shift,reason});
+  if(rec.requestId){const linked=state.requests.find(x=>x.id===rec.requestId);if(linked)Object.assign(linked,{employeeCode:emp.code,employeeName:emp.name,itemId:item.id,itemName:item.name,qty,date,shift,reason,notes});}
+ }else{
+  Object.assign(rec,{employeeCode:emp.code,employeeName:emp.name,itemId:item.id,itemName:item.name,qty,date,shift,reason,notes});
+ }
+ save();closeRecordEditor();renderReports();renderRequests();renderDashboard();renderStock();renderEmployeeHistory();notify(type==="issue"?"Issued record updated and stock reconciled.":"Pending request updated.");
+});
+function deleteIssueRecord(id){
+ const rec=state.issues.find(x=>x.id===id);if(!rec)return;
+ if(!confirm(`Delete the issue of ${rec.itemName} × ${rec.qty} for ${rec.employeeCode}? The stock will be returned.`))return;
+ const item=getItem(rec.itemId);if(item)item.stock=Number(item.stock)+Number(rec.qty||0);
+ if(rec.requestId){const linked=state.requests.find(x=>x.id===rec.requestId);if(linked){linked.status="Pending";delete linked.fulfilledDate;}}
+ state.issues=state.issues.filter(x=>x.id!==id);save();renderReports();renderRequests();renderDashboard();renderStock();renderEmployeeHistory();notify("Issue record deleted; stock returned.");
+}
+function deletePendingRequest(id){
+ const rec=state.requests.find(x=>x.id===id);if(!rec||rec.status!=="Pending")return;
+ if(!confirm(`Delete pending request for ${rec.employeeCode} — ${rec.itemName} × ${rec.qty}?`))return;
+ state.requests=state.requests.filter(x=>x.id!==id);save();renderReports();renderRequests();renderDashboard();notify("Pending request deleted.");
 }
 $("reportDate").value=todayISO();$("reportDate").addEventListener("change",renderReports);
 function downloadFullBackup(){const blob=new Blob([JSON.stringify({...state,exportedAt:new Date().toISOString()},null,2)],{type:"application/json"});downloadBlob(blob,`safety-items-backup-${todayISO()}.json`);}
