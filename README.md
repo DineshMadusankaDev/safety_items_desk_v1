@@ -11,6 +11,7 @@ Mobile-friendly, offline-first PWA for tracking employee safety-item issues and 
 - Every item has an editable issue rule (weekly limit, daily limit, damaged/replacement, supervisor approval, no limit, or not set/blocked).
 - Monthly per-employee issue history and request history.
 - Stock tracking, pending requests, daily reports, quick daily-close print/backup actions, CSV export, and JSON backup/restore.
+- Reports tab supports editing or deleting issue records and editing or deleting pending requests; deleting an issued record returns its quantity to stock.
 - Printed daily reports include the selected report date.
 
 ## Weekly periods
